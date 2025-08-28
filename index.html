@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>A-Frame сцена</title>
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+  <script>
+    AFRAME.registerComponent('redirect-on-click', {
+      schema: { type: 'string' },
+      init: function () {
+        this.el.addEventListener('click', () => {
+          window.location.href = this.data;
+        });
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <a-scene antialias="true" cursor="rayOrigin: mouse" raycaster="objects: .clickable">
+
+
+
+    <!-- Фонове зображення -->
+    <a-sky src="panorama.jpg" rotation="0 -90 0"></a-sky>
+
+    <!-- Стрілка -->
+    <a-entity position="0 1.2 -3">
+      <a-image class="clickable" src="https://cdn-icons-png.flaticon.com/512/271/271228.png" scale="0.5 0.5 0.5"
+        redirect-on-click="scene2.html"
+        animation__mouseenter="property: scale; to: 0.6 0.6 0.6; startEvents: mouseenter; dur: 200"
+        animation__mouseleave="property: scale; to: 0.5 0.5 0.5; startEvents: mouseleave; dur: 200">
+      </a-image>
+
+      <a-text value="Перейти до room аудиторії 102" position="0 -0.8 0" width="4" align="center" color="#ffffff"
+        side="double">
+      </a-text>
+    </a-entity>
+
+
+  </a-scene>
+</body>
+
+</html>
