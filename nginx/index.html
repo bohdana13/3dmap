@@ -50,6 +50,15 @@ if (!savedScene) {
     savedScene = "room101";
 }
 let isMobile = window.innerWidth <= 768;
+
+function preloadScene(sceneId) {
+    const scene = viewer?.getConfig?.().scenes?.[sceneId];
+    if (scene && scene.panorama) {
+        const img = new Image();
+        img.src = scene.panorama;
+    }
+}
+
 let viewer = pannellum.viewer('panorama', {
     "default": {
         "firstScene": savedScene,
@@ -704,10 +713,9 @@ let viewer = pannellum.viewer('panorama', {
     }
 });
 
-Object.values(viewer.getConfig().scenes).forEach(scene => {
-    const img = new Image();
-    img.src = scene.panorama;
-});
+setTimeout(() => {
+    preloadScene(savedScene);
+}, 500);
 
 viewer.on('scenechange', function(sceneId) {
     localStorage.setItem("lastScene", sceneId);
@@ -716,18 +724,10 @@ viewer.on('scenechange', function(sceneId) {
 
     if (scene.hotSpots) {
         scene.hotSpots.forEach(h => {
-            if (h.sceneId) {
-                const nextScene = viewer.getConfig().scenes[h.sceneId];
-
-                if (nextScene && nextScene.panorama) {
-                    const img = new Image();
-                    img.src = nextScene.panorama;
-                }
-            }
+            if (h.sceneId) preloadScene(h.sceneId);
         });
     }
 });
-
 
 viewer.on('mousedown', function() {
     console.log("Pitch:", viewer.getPitch(), "Yaw:", viewer.getYaw());
