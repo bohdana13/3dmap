@@ -92,7 +92,7 @@ let viewer = pannellum.viewer('panorama', {
         "room102": {
             "title": "2 поверх",
             "type": "equirectangular",
-            "panorama": "/panoramas/2floor-entry.jpg",
+            "panorama": "http://194.44.128.171:9000/panoramas/2floor-entry.jpg",
             "pitch": 0,
             "yaw": -90,
             "hotSpots": [
@@ -117,7 +117,7 @@ let viewer = pannellum.viewer('panorama', {
 
         "room103": {
             "type": "equirectangular",
-            "panorama": "/panoramas/211hall.jpg",
+            "panorama": "http://194.44.128.171:9000/panoramas/211hall.jpg",
             "pitch": 0,
             "yaw": -195,
             "hotSpots": [
@@ -159,7 +159,7 @@ let viewer = pannellum.viewer('panorama', {
 
         "room104": {
             "type": "equirectangular",
-            "panorama": "/panoramas/212hall.jpg",
+            "panorama": "http://194.44.128.171:9000/panoramas/212hall.jpg",
             "pitch": 0,
             "yaw": 180,
             "hotSpots": [
@@ -199,7 +199,7 @@ let viewer = pannellum.viewer('panorama', {
         
          "room105": {
             "type": "equirectangular",
-            "panorama": "/panoramas/211.jpg",
+            "panorama": "http://194.44.128.171:9000/panoramas/211.jpg",
             "pitch": -10,
             "yaw": -40,
             "hotSpots": [
@@ -217,7 +217,7 @@ let viewer = pannellum.viewer('panorama', {
         
          "room106": {
             "type": "equirectangular",
-            "panorama": "/panoramas/212.jpg",
+            "panorama": "http://194.44.128.171:9000/panoramas/212.jpg",
             "pitch": 0,
             "yaw": 0,
             "hotSpots": [
@@ -705,10 +705,23 @@ let viewer = pannellum.viewer('panorama', {
 });
 
 viewer.on('scenechange', function(sceneId) {
-    console.log("Scene changed to:", sceneId);
     localStorage.setItem("lastScene", sceneId);
-});
 
+    const scene = viewer.getConfig().scenes[sceneId];
+
+    if (scene.hotSpots) {
+        scene.hotSpots.forEach(h => {
+            if (h.sceneId) {
+                const nextScene = viewer.getConfig().scenes[h.sceneId];
+
+                if (nextScene && nextScene.panorama) {
+                    const img = new Image();
+                    img.src = nextScene.panorama;
+                }
+            }
+        });
+    }
+});
 
 
 viewer.on('mousedown', function() {
