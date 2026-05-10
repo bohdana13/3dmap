@@ -704,6 +704,11 @@ let viewer = pannellum.viewer('panorama', {
     }
 });
 
+Object.values(viewer.getConfig().scenes).forEach(scene => {
+    const img = new Image();
+    img.src = scene.panorama;
+});
+
 viewer.on('scenechange', function(sceneId) {
     localStorage.setItem("lastScene", sceneId);
 
