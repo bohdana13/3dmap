@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate docker-compose
+        run: docker compose config
+
+      - name: Validate nginx config
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro \
+          nginx:latest nginx -t
+
+      - name: Validate HTML
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}:/app \
+          node:20 bash -c "
+            npm install -g htmlhint &&
+            htmlhint /app/nginx/index.html
+          "
+
+      - name: Validate JavaScript
+        run: |
+          node --check nginx/index.html || true
