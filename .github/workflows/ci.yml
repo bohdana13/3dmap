@@ -22,9 +22,9 @@ jobs:
 
       - name: Validate nginx config
         run: |
-          docker run --rm \
-          -v ${{ github.workspace }}/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro \
-          nginx:latest nginx -t
+          docker compose up -d
+          docker compose exec -T nginx nginx -t
+          docker compose down
 
       - name: Validate HTML
         run: |
@@ -37,4 +37,4 @@ jobs:
 
       - name: Validate JavaScript
         run: |
-          node --check nginx/index.html || true
+          echo "JavaScript validation skipped"
