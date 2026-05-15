@@ -34,11 +34,7 @@
     </style>
 </head>
 <body>
-<!-- <div id="minimap">
-    <div class="point" data-scene="room101"></div>
-    <div class="point" data-scene="room102"></div>
-    <div class="point" data-scene="room103"></div>
-</div> -->
+ 
 <div id="panorama"></div>
 
 <script>
@@ -721,7 +717,6 @@ viewer.on('scenechange', function(sceneId) {
     localStorage.setItem("lastScene", sceneId);
     const scene = viewer.getConfig().scenes[sceneId];
 
-    // Вантажимо сусідні сцени наперед ТІЛЬКИ якщо це не мобільний
     if (scene.hotSpots && !isMobile) {
         scene.hotSpots.forEach(h => {
             if (h.sceneId) preloadScene(h.sceneId);
