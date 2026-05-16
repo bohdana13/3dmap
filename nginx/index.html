@@ -3,22 +3,24 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LBV89KRNBZ"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-LBV89KRNBZ');
+    gtag('config', 'G-LBV89KRNBZ');
 </script>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Інтерактивний віртуальний тур приміщеннями</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
     <style>
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -31,703 +33,771 @@
             width: 100%;
             height: 100vh;
         }
+
+        #homeButton {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+
+            z-index: 9999;
+
+            padding: 10px 16px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+
+            font-size: 14px;
+            cursor: pointer;
+
+            transition: opacity 0.2s ease,
+                background 0.2s ease;
+        }
+
+        #homeButton:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        #homeButton.hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            #homeButton {
+                left: 12px;
+                bottom: 12px;
+
+                padding: 12px 14px;
+
+                font-size: 13px;
+
+                max-width: 160px;
+            }
+        }
     </style>
 </head>
+
 <body>
- 
-<div id="panorama"></div>
 
-<script>
-    
-console.log("Saved scene:", localStorage.getItem("lastScene"));
+    <div id="panorama">
+        <button id="homeButton">Головний вхід</button>
+    </div>
+    <script>
 
-let savedScene = localStorage.getItem("lastScene");
-if (!savedScene) {
-    savedScene = "room101";
-}
-let isMobile = window.innerWidth <= 768;
+        console.log("Saved scene:", localStorage.getItem("lastScene"));
 
-function preloadScene(sceneId) {
-    const scene = viewer?.getConfig?.().scenes?.[sceneId];
-    if (scene && scene.panorama) {
-        const img = new Image();
-        img.src = scene.panorama;
-    }
-}
+        let savedScene = localStorage.getItem("lastScene");
+        if (!savedScene) {
+            savedScene = "room101";
+        }
+        let isMobile = window.innerWidth <= 768;
 
-let viewer = pannellum.viewer('panorama', {
-    "default": {
-        "firstScene": savedScene,
-        "sceneFadeDuration": 1000,
-        "autoLoad": true,
-        "compass": true,
-        "mouseViewMode": "drag",
+        function preloadScene(sceneId) {
+            const scene = viewer?.getConfig?.().scenes?.[sceneId];
+            if (scene && scene.panorama) {
+                const img = new Image();
+                img.src = scene.panorama;
+            }
+        }
 
-        
-        "hfov": isMobile ? 60 : 125,
-        "minHfov": isMobile ? 60 : 100,
-        "maxHfov": isMobile ? 90 : 140
-    
-    }, 
-    "scenes": {
-        "room101": {
-            "title": "Вхід",
-            "type": "equirectangular",
-            "panorama": "/panoramas/entry.jpg",
-            "pitch": 0,
-            "yaw": -85,
-            "hotSpots": [
-                {
+        let viewer = pannellum.viewer('panorama', {
+            "default": {
+                "firstScene": savedScene,
+                "sceneFadeDuration": 1000,
+                "autoLoad": true,
+                "compass": true,
+                "mouseViewMode": "drag",
+
+
+                "hfov": isMobile ? 60 : 125,
+                "minHfov": isMobile ? 60 : 100,
+                "maxHfov": isMobile ? 90 : 140
+
+            },
+            "scenes": {
+                "room101": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/entry.jpg",
                     "pitch": 0,
-                    "yaw": -77,
-                    "type": "scene",
-                    "text": "Зайти",
-                    "sceneId": "room119"
-                } , 
-                {
-                    "pitch": -3,
-                    "yaw": 0,
-                    "type": "info",
-                    "text": "9 корпус"
-                    
-                }
-            ]
-        },
-
-        "room102": {
-            "title": "2 поверх",
-            "type": "equirectangular",
-            "panorama": "/panoramas/2floor-entry.jpg",
-            "pitch": 0,
-            "yaw": -90,
-            "hotSpots": [
-                {
-                    "pitch": -10,
-                    "yaw": 188,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202-212, 219-224",
-                    "sceneId": "room104"
-                }, 
-                {
-                    "pitch": -25,
-                    "yaw": 90,
-                    "type": "scene",
-                    "text": "Спуститися на цокольний поверх",
-                    "sceneId": "room119",
-
-                    "targetYaw": 130,
-                }
-            ]
-        },
-
-        "room103": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/211hall.jpg",
-            "pitch": 0,
-            "yaw": -195,
-            "hotSpots": [
-                {
-                    "pitch": -10,
-                    "yaw": -90,
-                    "type": "scene",
-                    "text": "Зайти у 211 ауд.",
-                    "sceneId": "room105",
-
-                    "targetYaw": -70,
-                    "targetPitch": 0,
-                }, 
-                {
-                    "pitch": -10,
-                    "yaw": 165,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202-209, 221-224",
-                    "sceneId": "room107"
-                }, 
-                {
-                    "pitch": -13,
-                    "yaw": -7,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 212 та виходу",
-                    "sceneId": "room104",
-
-                    "targetYaw": -5,
-                }, 
-                {
-                    "pitch": -3,
-                    "yaw": 140,
-                    "type": "info",
-                    "text": "Ауд. 219,220 - секретар та завідувач кафедри програмного забезпечення комп'ютерних систем"
-                    
-                }
-            ]
-        },
-
-        "room104": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/212hall.jpg",
-            "pitch": 0,
-            "yaw": 180,
-            "hotSpots": [
-                {
-                    "pitch": -12,
-                    "yaw": -87,
-                    "type": "scene",
-                    "text": "Зайти в 212 ауд.",
-                    "sceneId": "room106",
-
-                    "targetYaw": -166,
-                }, 
-                {
-                    "pitch": -12,
-                    "yaw": 180,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202-211, 219-224",
-                    "sceneId": "room103"
-                }, 
-                {
-                    "pitch": -13,
-                    "yaw": -1,
-                    "type": "scene",
-                    "text": "Пройти до виходу",
-                    "sceneId": "room102",
-
-                    "targetYaw": -5,
-                },
-                {
-                    "pitch": 0,
-                    "yaw": 107,
-                    "type": "info",
-                    "text": "Вбиральня" 
-                }
-            ]
-        },
-        
-         "room105": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/211.jpg",
-            "pitch": -10,
-            "yaw": -40,
-            "hotSpots": [
-                {
-                    "pitch": -10,
-                    "yaw": 110,
-                    "type": "scene",
-                    "text": "Повернутися назад в хол",
-                    "sceneId": "room103",
-
-                    "targetYaw": 80,
-                }
-            ]
-        },
-        
-         "room106": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/212.jpg",
-            "pitch": 0,
-            "yaw": 0,
-            "hotSpots": [
-                {
-                    "pitch": -7,
-                    "yaw": 8,
-                    "type": "scene",
-                    "text": "Повернутися назад в хол",
-                    "sceneId": "room104",
-
-                    "targetYaw": 90,
-                }
-            ]
-        },
-        
-        
-         "room107": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/209hall.jpg",
-            "pitch": 0,
-            "yaw": -100,
-            "hotSpots": [
-                {
-                    "pitch": -9,
-                    "yaw": -25,
-                    "type": "scene",
-                    "text": "Зайти у 209 ауд.",
-                    "sceneId": "room108"
-                }, 
-                {
-                    "pitch": -10,
-                    "yaw": -110,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202-207, 221-224",
-                    "sceneId": "room109"
-                }, 
-                {
-                    "pitch": -10,
-                    "yaw": 62,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 211-212, 219",
-                    "sceneId": "room103",
-
-                    "targetYaw": -5,
-                },
-                {
-                    "pitch": -3,
-                    "yaw": -7,
-                    "type": "info",
-                    "text": "Господарське приміщення"
-                }
-            ]
-        },
-
-         "room108": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/209.jpg",
-            "pitch": 0,
-            "yaw": 70,
-            "hotSpots": [
-                {
-                    "pitch": -17,
-                    "yaw": -90,
-                    "type": "scene",
-                    "text": "Повернутися у коридор",
-                    "sceneId": "room107",
-
-                    "targetPitch": -2,
-                    "targetYaw": 120,
-                },
-                {
-                    "pitch": -7,
-                    "yaw": -22,
-                    "type": "scene",
-                    "text": "Зайти у 207 ауд.",
-                    "sceneId": "room111",
-
-                    "targetYaw": -120,
-                }, 
-                {
-                    "pitch": -3,
-                    "yaw": 200,
-                    "type": "info",
-                    "text": "Кабінет проф.\n С.Е. Остапова"
-                }
-            ]
-        },
-
-         "room109": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/221hall.jpg",
-            "pitch": 0,
-            "yaw": -190,
-            "hotSpots": [
-                {
-                    "pitch": -20,
-                    "yaw": 165,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202-207, 221-224",
-                    "sceneId": "room110"
-                },
-                {
-                    "pitch": -17,
-                    "yaw": -10,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 209-212, 219",
-                    "sceneId": "room107",
-
-                    "targetYaw": 55
-                },
-                {
-                    "pitch": -20,
-                    "yaw": 75,
-                    "type": "scene",
-                    "text": "Зайти у 221 ауд.",
-                    "sceneId": "room117"
-                }
-            ]
-        },
-
-         "room110": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/207hall.jpg",
-            "pitch": 0,
-            "yaw": 80,
-            "hotSpots": [
-                {
-                    "pitch": -7,
-                    "yaw": -150,
-                    "type": "scene",
-                    "text": "Зайти у 207 ауд.",
-                    "sceneId": "room111"
-                },
-                {
-                    "pitch": -13,
-                    "yaw": -17,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 207-212, 219-221",
-                    "sceneId": "room109",
-
-                    "targetYaw": -10
-                },
-                {
-                    "pitch": -13,
-                    "yaw": 65,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202, 224",
-                    "sceneId": "room112"
-                }, 
-                {
-                    "pitch": -3,
-                    "yaw": -130,
-                    "type": "info",
-                    "text": "Технологічне приміщення"
-                }, 
-                {
-                    "pitch": -3,
-                    "yaw": 180,
-                    "type": "info",
-                    "text": "Господарське приміщення"
-                }
-            ]
-        },
-
-         "room111": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/207.jpg",
-            "pitch": 0,
-            "yaw": -10,
-            "hotSpots": [
-                {
-                    "pitch": -15,
-                    "yaw": 155,
-                    "type": "scene",
-                    "text": "Повернутися у коридор",
-                    "sceneId": "room110",
-
-                    "targetYaw": 80,
-                },
-                {
-                    "pitch": -7,
-                    "yaw": 95,
-                    "type": "scene",
-                    "text": "Зайти у 209 ауд.",
-                    "sceneId": "room108",
-
-                    "targetYaw": 170,
-                }
-            ]
-        },
-
-         "room112": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/222hall.jpg",
-            "pitch": 0,
-            "yaw": -20,
-            "hotSpots": [
-                {
-                    "pitch": -13,
-                    "yaw": -17,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202, 224",
-                    "sceneId": "room113"
-                },
-                {
-                    "pitch": -13,
-                    "yaw": -195,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 207-212, 219-221",
-                    "sceneId": "room110",
-
-                    "targetYaw": -30,
-                },
-                {
-                    "pitch": -5,
-                    "yaw": -175,
-                    "type": "scene",
-                    "text": "Зайти у 221 ауд.",
-                    "sceneId": "room117",
-
-                    "targetYaw": 30,
-                },
-                {
-                    "pitch": -3,
-                    "yaw": 10,
-                    "type": "info",
-                    "text": "Евакуаційний вихід"
-                }, 
-                {
-                    "pitch": -3,
-                    "yaw": -55,
-                    "type": "info",
-                    "text": "Ліфт"
-                }, 
-                {
-                    "pitch": -3,
-                    "yaw": -138,
-                    "type": "info",
-                    "text": "Технічне приміщення"
-                }
-            ]
-        },
-
-         "room113": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/223elevator.jpg",
-            "pitch": 0,
-            "yaw": -100,
-            "hotSpots": [
-                {
-                    "pitch": -15,
-                    "yaw": -115,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202, 224",
-                    "sceneId": "room114"
-                },
-                {
-                    "pitch": -10,
-                    "yaw": 80,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 207-212, 219-221",
-                    "sceneId": "room112",
-
-                    "targetYaw": 155,
-                },
-                
-                {
-                    "pitch": -3,
-                    "yaw": -155,
-                    "type": "info",
-                    "text": "Лабораторія для дипломного проєктування"
-                }, 
-                {
-                    "pitch": -3,
-                    "yaw": 123,
-                    "type": "info",
-                    "text": "Ліфт"
-                }, 
-                {
-                    "pitch": -4,
-                    "yaw": 138,
-                    "type": "info",
-                    "text": "Ліфт"
-                }
-            ]
-        },
-
-          "room114": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/224_204.jpg",
-            "pitch": 0,
-            "yaw": -90,
-            "hotSpots": [
-                {
-                    "pitch": -18,
-                    "yaw": -90,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 202, 224",
-                    "sceneId": "room115"
-                },
-                {
-                    "pitch": -10,
-                    "yaw": -195,
-                    "type": "scene",
-                    "text": "Зайти у 224 ауд.", 
-                    "sceneId": "room118"
-                },
-                {
-                    "pitch": -10,
-                    "yaw": 85,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 207-212, 219-221",
-                    "sceneId": "room113",
-
-                    "targetYaw": 65,
-                },
-                {
-                    "pitch": -5,
-                    "yaw": -12,
-                    "type": "info",
-                    "text": "КАФЕДРА ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ КОМП'ЮТЕРНИХ СИСТЕМ" 
-                },
-                {
-                    "pitch": 15,
-                    "yaw": 50,
-                    "type": "info",
-                    "text": "Відкрити нову вкладку співробітників кафедри",
-                    "clickHandlerFunc": function() {
-                        window.open("https://pzks.chnu.edu.ua/pro-nas/spivrobitnyky-kafedry/", "_blank");
-                    }
-                },
-                {
-                    "pitch": -3,
-                    "yaw": -23,
-                    "type": "info",
-                    "text": "Технологічне приміщення"
-                },
-                {
-                    "pitch": -3,
-                    "yaw": 7,
-                    "type": "info",
-                    "text": "Архів дипломних проєктів кафедри ПЗКС"
-                }
-            ]
-        },
-
-          "room115": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/202hall.jpg",
-            "pitch": 0,
-            "yaw": -160,
- 
-
-            "hotSpots": [
-                {
-                    "pitch": -5,
                     "yaw": -85,
-                    "type": "scene",
-                    "text": "Зайти у 202 ауд.",
-                    "sceneId": "room116"
-                },
-                {
-                    "pitch": -13,
-                    "yaw": 15,
-                    "type": "scene",
-                    "text": "Пройти до ауд. 207-212, 219-224",
-                    "sceneId": "room114",
+                    "hotSpots": [
+                        {
+                            "pitch": 0,
+                            "yaw": -77,
+                            "type": "scene",
+                            "text": "Зайти",
+                            "sceneId": "room119"
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": 0,
+                            "type": "info",
+                            "text": "9 корпус"
 
-                    "targetYaw": 77,
+                        }
+                    ]
                 },
-                {
-                    "pitch": -3,
+
+                "room102": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/2floor-entry.jpg",
+                    "pitch": 0,
+                    "yaw": -90,
+                    "hotSpots": [
+                        {
+                            "pitch": -10,
+                            "yaw": 188,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202-212, 219-224",
+                            "sceneId": "room104"
+                        },
+                        {
+                            "pitch": -25,
+                            "yaw": 90,
+                            "type": "scene",
+                            "text": "Спуститися на цокольний поверх",
+                            "sceneId": "room119",
+
+                            "targetYaw": 130,
+                        }
+                    ]
+                },
+
+                "room103": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/211hall.jpg",
+                    "pitch": 0,
+                    "yaw": -195,
+                    "hotSpots": [
+                        {
+                            "pitch": -10,
+                            "yaw": -90,
+                            "type": "scene",
+                            "text": "Зайти у 211 ауд.",
+                            "sceneId": "room105",
+
+                            "targetYaw": -70,
+                            "targetPitch": 0,
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": 165,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202-209, 221-224",
+                            "sceneId": "room107"
+                        },
+                        {
+                            "pitch": -13,
+                            "yaw": -7,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 212 та виходу",
+                            "sceneId": "room104",
+
+                            "targetYaw": -5,
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": 140,
+                            "type": "info",
+                            "text": "Ауд. 219,220 - секретар та завідувач кафедри програмного забезпечення комп'ютерних систем"
+
+                        }
+                    ]
+                },
+
+                "room104": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/212hall.jpg",
+                    "pitch": 0,
+                    "yaw": 180,
+                    "hotSpots": [
+                        {
+                            "pitch": -12,
+                            "yaw": -87,
+                            "type": "scene",
+                            "text": "Зайти в 212 ауд.",
+                            "sceneId": "room106",
+
+                            "targetYaw": -166,
+                        },
+                        {
+                            "pitch": -12,
+                            "yaw": 180,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202-211, 219-224",
+                            "sceneId": "room103"
+                        },
+                        {
+                            "pitch": -13,
+                            "yaw": -1,
+                            "type": "scene",
+                            "text": "Пройти до виходу",
+                            "sceneId": "room102",
+
+                            "targetYaw": -5,
+                        },
+                        {
+                            "pitch": 0,
+                            "yaw": 107,
+                            "type": "info",
+                            "text": "Вбиральня"
+                        }
+                    ]
+                },
+
+                "room105": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/211.jpg",
+                    "pitch": -10,
+                    "yaw": -40,
+                    "hotSpots": [
+                        {
+                            "pitch": -10,
+                            "yaw": 110,
+                            "type": "scene",
+                            "text": "Повернутися назад в хол",
+                            "sceneId": "room103",
+
+                            "targetYaw": 80,
+                        }
+                    ]
+                },
+
+                "room106": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/212.jpg",
+                    "pitch": 0,
+                    "yaw": 0,
+                    "hotSpots": [
+                        {
+                            "pitch": -7,
+                            "yaw": 8,
+                            "type": "scene",
+                            "text": "Повернутися назад в хол",
+                            "sceneId": "room104",
+
+                            "targetYaw": 90,
+                        }
+                    ]
+                },
+
+
+                "room107": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/209hall.jpg",
+                    "pitch": 0,
                     "yaw": -100,
-                    "type": "info",
-                    "text": "Господарське приміщення"
+                    "hotSpots": [
+                        {
+                            "pitch": -9,
+                            "yaw": -25,
+                            "type": "scene",
+                            "text": "Зайти у 209 ауд.",
+                            "sceneId": "room108"
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": -110,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202-207, 221-224",
+                            "sceneId": "room109"
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": 62,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 211-212, 219",
+                            "sceneId": "room103",
+
+                            "targetYaw": -5,
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -7,
+                            "type": "info",
+                            "text": "Господарське приміщення"
+                        }
+                    ]
                 },
-                {
-                    "pitch": -10,
+
+                "room108": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/209.jpg",
+                    "pitch": 0,
+                    "yaw": 70,
+                    "hotSpots": [
+                        {
+                            "pitch": -17,
+                            "yaw": -90,
+                            "type": "scene",
+                            "text": "Повернутися у коридор",
+                            "sceneId": "room107",
+
+                            "targetPitch": -2,
+                            "targetYaw": 120,
+                        },
+                        {
+                            "pitch": -7,
+                            "yaw": -22,
+                            "type": "scene",
+                            "text": "Зайти у 207 ауд.",
+                            "sceneId": "room111",
+
+                            "targetYaw": -120,
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": 200,
+                            "type": "info",
+                            "text": "Кабінет проф.\n С.Е. Остапова"
+                        }
+                    ]
+                },
+
+                "room109": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/221hall.jpg",
+                    "pitch": 0,
+                    "yaw": -190,
+                    "hotSpots": [
+                        {
+                            "pitch": -20,
+                            "yaw": 165,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202-207, 221-224",
+                            "sceneId": "room110"
+                        },
+                        {
+                            "pitch": -17,
+                            "yaw": -10,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 209-212, 219",
+                            "sceneId": "room107",
+
+                            "targetYaw": 55
+                        },
+                        {
+                            "pitch": -20,
+                            "yaw": 75,
+                            "type": "scene",
+                            "text": "Зайти у 221 ауд.",
+                            "sceneId": "room117"
+                        }
+                    ]
+                },
+
+                "room110": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/207hall.jpg",
+                    "pitch": 0,
+                    "yaw": 80,
+                    "hotSpots": [
+                        {
+                            "pitch": -7,
+                            "yaw": -150,
+                            "type": "scene",
+                            "text": "Зайти у 207 ауд.",
+                            "sceneId": "room111"
+                        },
+                        {
+                            "pitch": -13,
+                            "yaw": -17,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 207-212, 219-221",
+                            "sceneId": "room109",
+
+                            "targetYaw": -10
+                        },
+                        {
+                            "pitch": -13,
+                            "yaw": 65,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202, 224",
+                            "sceneId": "room112"
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -130,
+                            "type": "info",
+                            "text": "Технологічне приміщення"
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": 180,
+                            "type": "info",
+                            "text": "Господарське приміщення"
+                        }
+                    ]
+                },
+
+                "room111": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/207.jpg",
+                    "pitch": 0,
+                    "yaw": -10,
+                    "hotSpots": [
+                        {
+                            "pitch": -15,
+                            "yaw": 155,
+                            "type": "scene",
+                            "text": "Повернутися у коридор",
+                            "sceneId": "room110",
+
+                            "targetYaw": 80,
+                        },
+                        {
+                            "pitch": -7,
+                            "yaw": 95,
+                            "type": "scene",
+                            "text": "Зайти у 209 ауд.",
+                            "sceneId": "room108",
+
+                            "targetYaw": 170,
+                        }
+                    ]
+                },
+
+                "room112": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/222hall.jpg",
+                    "pitch": 0,
+                    "yaw": -20,
+                    "hotSpots": [
+                        {
+                            "pitch": -13,
+                            "yaw": -17,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202, 224",
+                            "sceneId": "room113"
+                        },
+                        {
+                            "pitch": -13,
+                            "yaw": -195,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 207-212, 219-221",
+                            "sceneId": "room110",
+
+                            "targetYaw": -30,
+                        },
+                        {
+                            "pitch": -5,
+                            "yaw": -175,
+                            "type": "scene",
+                            "text": "Зайти у 221 ауд.",
+                            "sceneId": "room117",
+
+                            "targetYaw": 30,
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": 10,
+                            "type": "info",
+                            "text": "Евакуаційний вихід"
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -55,
+                            "type": "info",
+                            "text": "Ліфт"
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -138,
+                            "type": "info",
+                            "text": "Технічне приміщення"
+                        }
+                    ]
+                },
+
+                "room113": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/223elevator.jpg",
+                    "pitch": 0,
+                    "yaw": -100,
+                    "hotSpots": [
+                        {
+                            "pitch": -15,
+                            "yaw": -115,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202, 224",
+                            "sceneId": "room114"
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": 80,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 207-212, 219-221",
+                            "sceneId": "room112",
+
+                            "targetYaw": 155,
+                        },
+
+                        {
+                            "pitch": -3,
+                            "yaw": -155,
+                            "type": "info",
+                            "text": "Лабораторія для дипломного проєктування"
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": 123,
+                            "type": "info",
+                            "text": "Ліфт"
+                        },
+                        {
+                            "pitch": -4,
+                            "yaw": 138,
+                            "type": "info",
+                            "text": "Ліфт"
+                        }
+                    ]
+                },
+
+                "room114": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/224_204.jpg",
+                    "pitch": 0,
+                    "yaw": -90,
+                    "hotSpots": [
+                        {
+                            "pitch": -18,
+                            "yaw": -90,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 202, 224",
+                            "sceneId": "room115"
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": -195,
+                            "type": "scene",
+                            "text": "Зайти у 224 ауд.",
+                            "sceneId": "room118"
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": 85,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 207-212, 219-221",
+                            "sceneId": "room113",
+
+                            "targetYaw": 65,
+                        },
+                        {
+                            "pitch": -5,
+                            "yaw": -12,
+                            "type": "info",
+                            "text": "КАФЕДРА ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ КОМП'ЮТЕРНИХ СИСТЕМ"
+                        },
+                        {
+                            "pitch": 15,
+                            "yaw": 50,
+                            "type": "info",
+                            "text": "Відкрити нову вкладку співробітників кафедри",
+                            "clickHandlerFunc": function () {
+                                window.open("https://pzks.chnu.edu.ua/pro-nas/spivrobitnyky-kafedry/", "_blank");
+                            }
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -23,
+                            "type": "info",
+                            "text": "Технологічне приміщення"
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": 7,
+                            "type": "info",
+                            "text": "Архів дипломних проєктів кафедри ПЗКС"
+                        }
+                    ]
+                },
+
+                "room115": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/202hall.jpg",
+                    "pitch": 0,
+                    "yaw": -160,
+
+
+                    "hotSpots": [
+                        {
+                            "pitch": -5,
+                            "yaw": -85,
+                            "type": "scene",
+                            "text": "Зайти у 202 ауд.",
+                            "sceneId": "room116"
+                        },
+                        {
+                            "pitch": -13,
+                            "yaw": 15,
+                            "type": "scene",
+                            "text": "Пройти до ауд. 207-212, 219-224",
+                            "sceneId": "room114",
+
+                            "targetYaw": 77,
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -100,
+                            "type": "info",
+                            "text": "Господарське приміщення"
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": 120,
+                            "type": "scene",
+                            "text": "Зайти у 224 ауд.",
+                            "sceneId": "room118",
+
+                            "targetYaw": 80
+                        }
+                    ]
+                },
+
+                "room116": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/202.jpg",
+                    "pitch": 0,
+                    "yaw": 170,
+                    "hotSpots": [
+                        {
+                            "pitch": -13,
+                            "yaw": -30,
+                            "type": "scene",
+                            "text": "Повернутися у коридор",
+                            "sceneId": "room115",
+                            "targetYaw": 100,
+
+                        }
+                    ]
+                },
+
+                "room117": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/221.jpg",
+                    "pitch": 0,
                     "yaw": 120,
-                    "type": "scene",
-                    "text": "Зайти у 224 ауд.", 
-                    "sceneId": "room118",
+                    "hotSpots": [
+                        {
+                            "pitch": -10,
+                            "yaw": -82,
+                            "type": "scene",
+                            "text": "Повернутися у коридор",
+                            "sceneId": "room109",
+                            "targetYaw": -110,
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -145,
+                            "type": "scene",
+                            "text": "Повернутися у коридор",
+                            "sceneId": "room112",
 
-                    "targetYaw": 80
-                }
-            ]
-        },
-
-          "room116": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/202.jpg",
-            "pitch": 0,
-            "yaw": 170,
-            "hotSpots": [
-                {
-                    "pitch": -13,
-                    "yaw": -30,
-                    "type": "scene",
-                    "text": "Повернутися у коридор",
-                    "sceneId": "room115",
-                    "targetYaw": 100,
-
-                }
-            ]
-        },
-
-          "room117": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/221.jpg",
-            "pitch": 0,
-            "yaw": 120,
-            "hotSpots": [
-                {
-                    "pitch": -10,
-                    "yaw": -82,
-                    "type": "scene",
-                    "text": "Повернутися у коридор",
-                    "sceneId": "room109",
-                    "targetYaw": -110,
+                            "targetYaw": 50,
+                        }
+                    ]
                 },
-                {
-                    "pitch": -3,
-                    "yaw": -145,
-                    "type": "scene",
-                    "text": "Повернутися у коридор",
-                    "sceneId": "room112",
 
-                    "targetYaw": 50,
-                }
-            ]
-        },
+                "room118": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/224.jpg",
+                    "pitch": 0,
+                    "yaw": 120,
+                    "hotSpots": [
+                        {
+                            "pitch": -10,
+                            "yaw": -22,
+                            "type": "scene",
+                            "text": "Повернутися у коридор",
+                            "sceneId": "room114",
 
-        "room118": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/224.jpg",
-            "pitch": 0,
-            "yaw": 120,
-            "hotSpots": [
-                {
-                    "pitch": -10,
-                    "yaw": -22,
-                    "type": "scene",
-                    "text": "Повернутися у коридор",
-                    "sceneId": "room114",
+                            "targetYaw": 0,
+                        },
+                        {
+                            "pitch": -3,
+                            "yaw": -108,
+                            "type": "scene",
+                            "text": "Повернутися у коридор",
+                            "sceneId": "room115",
 
-                    "targetYaw": 0,
+                            "targetYaw": -80,
+                        }
+                    ]
                 },
-                {
-                    "pitch": -3,
-                    "yaw": -108,
-                    "type": "scene",
-                    "text": "Повернутися у коридор",
-                    "sceneId": "room115",
 
-                    "targetYaw": -80,
-                }
-            ]
-        },
+                "room119": {
+                    "type": "equirectangular",
+                    "panorama": "/panoramas/entryhall.jpg",
+                    "pitch": 0,
+                    "yaw": 170,
+                    "hotSpots": [
+                        {
+                            "pitch": -3,
+                            "yaw": 35,
+                            "type": "scene",
+                            "text": "Піднятися на 2 поверх",
+                            "sceneId": "room102"
+                        },
+                        {
+                            "pitch": -10,
+                            "yaw": -36,
+                            "type": "scene",
+                            "text": "Вийти",
+                            "sceneId": "room101",
 
-        "room119": {
-            "type": "equirectangular",
-            "panorama": "/panoramas/entryhall.jpg",
-            "pitch": 0,
-            "yaw": 170,
-            "hotSpots": [
-                {
-                    "pitch": -3,
-                    "yaw": 35,
-                    "type": "scene",
-                    "text": "Піднятися на 2 поверх",
-                    "sceneId": "room102"
-                }, 
-                {
-                    "pitch": -10,
-                    "yaw": -36,
-                    "type": "scene",
-                    "text": "Вийти",
-                    "sceneId": "room101",
-
-                    "targetYaw": 90,
-                }
-            ]
-        }, 
-    }
-});
-
-setTimeout(() => {
-    preloadScene(savedScene);
-}, 500);
-
-viewer.on('scenechange', function(sceneId) {
-    localStorage.setItem("lastScene", sceneId);
-    const scene = viewer.getConfig().scenes[sceneId];
-
-    if (scene.hotSpots && !isMobile) {
-        scene.hotSpots.forEach(h => {
-            if (h.sceneId) preloadScene(h.sceneId);
+                            "targetYaw": 90,
+                        }
+                    ]
+                },
+            }
         });
-    }
-});
 
-viewer.on('mousedown', function() {
-    console.log("Pitch:", viewer.getPitch(), "Yaw:", viewer.getYaw());
-});
-</script>
+
+        const homeButton = document.getElementById("homeButton");
+
+        function updateHomeButton(sceneId) {
+            if (sceneId === "room101") {
+                homeButton.classList.add("hidden");
+            } else {
+                homeButton.classList.remove("hidden");
+            }
+        }
+
+        homeButton.addEventListener("click", () => {
+            viewer.loadScene("room101");
+        });
+
+
+
+        viewer.on('scenechange', function (sceneId) {
+            localStorage.setItem("lastScene", sceneId);
+
+            updateHomeButton(sceneId);
+
+            const scene = viewer.getConfig().scenes[sceneId];
+
+            if (scene.hotSpots && !isMobile) {
+                scene.hotSpots.forEach(h => {
+                    if (h.sceneId) preloadScene(h.sceneId);
+                });
+            }
+        });
+
+        updateHomeButton(savedScene);
+
+
+        setTimeout(() => {
+            preloadScene(savedScene);
+        }, 500);
+
+
+        viewer.on('mousedown', function () {
+            console.log("Pitch:", viewer.getPitch(), "Yaw:", viewer.getYaw());
+        });
+    </script>
 
 </body>
+
 </html>
