@@ -75,6 +75,25 @@
 
                 max-width: 160px;
             }
+
+
+            .pnlm-tooltip {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+
+            .pnlm-tooltip span {
+                visibility: visible !important;
+                opacity: 1 !important;
+
+                display: block !important;
+            }
+
+            .pnlm-hotspot:hover .pnlm-tooltip,
+            .pnlm-hotspot:hover .pnlm-tooltip span {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
         }
     </style>
 </head>
@@ -161,6 +180,8 @@
                             "sceneId": "room119",
 
                             "targetYaw": 130,
+                            
+                            
                         }
                     ]
                 },
@@ -198,10 +219,10 @@
                             "targetYaw": -5,
                         },
                         {
-                            "pitch": -3,
+                            "pitch": 0,
                             "yaw": 140,
                             "type": "info",
-                            "text": "Ауд. 219,220 - секретар та завідувач кафедри програмного забезпечення комп'ютерних систем"
+                            "text": "Ауд. 219,220 - секретар та завідувач кафедри\nпрограмного забезпечення комп'ютерних систем"
 
                         }
                     ]
@@ -418,13 +439,13 @@
                             "sceneId": "room112"
                         },
                         {
-                            "pitch": -3,
+                            "pitch": 1,
                             "yaw": -130,
                             "type": "info",
                             "text": "Технологічне приміщення"
                         },
                         {
-                            "pitch": -3,
+                            "pitch": 1,
                             "yaw": 180,
                             "type": "info",
                             "text": "Господарське приміщення"
@@ -563,7 +584,7 @@
                     "hotSpots": [
                         {
                             "pitch": -18,
-                            "yaw": -90,
+                            "yaw": -93,
                             "type": "scene",
                             "text": "Пройти до ауд. 202, 224",
                             "sceneId": "room115"
@@ -585,31 +606,31 @@
                             "targetYaw": 65,
                         },
                         {
-                            "pitch": -5,
-                            "yaw": -12,
+                            "pitch": 0,
+                            "yaw": -13,
                             "type": "info",
-                            "text": "КАФЕДРА ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ КОМП'ЮТЕРНИХ СИСТЕМ"
+                            "text": "КАФЕДРА ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ\nКОМП'ЮТЕРНИХ СИСТЕМ"
                         },
                         {
                             "pitch": 15,
                             "yaw": 50,
                             "type": "info",
-                            "text": "Відкрити нову вкладку співробітників кафедри",
+                            "text": "Перейти до вебсайту співробітників кафедри",
                             "clickHandlerFunc": function () {
                                 window.open("https://pzks.chnu.edu.ua/pro-nas/spivrobitnyky-kafedry/", "_blank");
                             }
                         },
                         {
-                            "pitch": -3,
-                            "yaw": -23,
+                            "pitch": -10,
+                            "yaw": -26,
                             "type": "info",
-                            "text": "Технологічне приміщення"
+                            "text": "Технологічне\nприміщення"
                         },
                         {
-                            "pitch": -3,
+                            "pitch": -10,
                             "yaw": 7,
                             "type": "info",
-                            "text": "Архів дипломних проєктів кафедри ПЗКС"
+                            "text": "Архів дипломних проєктів\nкафедри ПЗКС"
                         }
                     ]
                 },
