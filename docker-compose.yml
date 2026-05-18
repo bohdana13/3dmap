@@ -4,7 +4,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx/index.html:/usr/share/nginx/html/index.html
+      - ./nginx:/usr/share/nginx/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
   minio:
     image: minio/minio
