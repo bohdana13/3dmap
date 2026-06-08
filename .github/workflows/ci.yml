@@ -36,5 +36,25 @@ jobs:
           "
 
       - name: Validate JavaScript
-        run: |
-          echo "JavaScript validation skipped"
+        run: echo "JavaScript validation skipped"
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/3dmap
+
+            git pull origin main
+
+            docker-compose down
+            docker-compose up -d
