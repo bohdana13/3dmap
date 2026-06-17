@@ -20,6 +20,14 @@ jobs:
       - name: Validate docker-compose
         run: docker compose config
 
+      - name: Generate dummy SSL certs for Nginx validation
+        run: |
+          mkdir -p ./certbot/conf/live/virtual-pzks.chnu.edu.ua
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout ./certbot/conf/live/virtual-pzks.chnu.edu.ua/privkey.pem \
+            -out ./certbot/conf/live/virtual-pzks.chnu.edu.ua/fullchain.pem \
+            -subj "/CN=virtual-pzks.chnu.edu.ua"
+
       - name: Validate nginx config
         run: |
           docker compose up -d
