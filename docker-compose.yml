@@ -18,12 +18,14 @@ services:
       - ./certbot/conf:/etc/letsencrypt
     entrypoint: /bin/sh -c
     command: >
-      "certbot certonly --webroot -w /var/www/certbot
-      -d virtual-pzks.chnu.edu.ua
-      --email redko.bohdana@chnu.edu.ua
-      --agree-tos --no-eff-email
-      --force-renewal
-      && tail -f /dev/null"
+      "if [ ! -f /etc/letsencrypt/live/virtual-pzks.chnu.edu.ua/fullchain.pem ]; then
+        certbot certonly --webroot -w /var/www/certbot
+        -d virtual-pzks.chnu.edu.ua
+        --email redko.bohdana@chnu.edu.ua
+        --agree-tos --no-eff-email
+        --force-renewal;
+      fi &&
+      tail -f /dev/null"
   minio:
     image: minio/minio
     container_name: minio
